@@ -1,0 +1,24 @@
+{
+  "name": "chatApp",
+  "authors": [
+    "borvelt <borvelt@borvelts-MacBook-Pro.local>"
+  ],
+  "description": "chat application",
+  "main": "index.html",
+  "keywords": [
+    "chat",
+    "chatapp"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

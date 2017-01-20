@@ -4,7 +4,12 @@
       <w>asgi</w>
       <w>asgiref</w>
       <w>backends</w>
+      <w>clickjacking</w>
+      <w>csrf</w>
       <w>inmemory</w>
+      <w>onclose</w>
+      <w>onmessage</w>
+      <w>onopen</w>
       <w>sqlite</w>
       <w>websocket</w>
     </words>
