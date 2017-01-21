@@ -6,11 +6,13 @@ var openedSocket, attachMessage, left = 'left', right = 'right',
 Message = function (arg) {
     this.text = arg.text;
     this.messageSide = arg.messageSide;
+    this.datetime = arg.datetime;
     this.draw = function (_this) {
         return function () {
             var $message;
             $message = $($('.message_template').clone().html());
             $message.addClass(_this.messageSide).find('.text').html(_this.text);
+            $message.find(".datetime").addClass(_this.messageSide).attr('title', _this.datetime.split(".")[0]).text(_this.datetime.split(" ")[1].split(".")[0]);
             $('.messages').append($message);
             return setTimeout(function () {
                 return $message.addClass('appeared');
@@ -23,11 +25,13 @@ Message = function (arg) {
 enableChatRoom = function () {
     $('.message_input').removeAttr('disabled').attr('placeholder', 'Please Type Your Message...');
     $('.send_message').removeClass('disabled');
+    $('#buddy').text(buddy);
 };
 
 disableChatRoom = function () {
     $('.message_input').prop('disabled', 'disabled').removeAttr('placeholder');
     $('.send_message').addClass('disabled');
+    $('#buddy').text('');
 };
 
 getMessageText = function () {
@@ -39,11 +43,14 @@ getMessageText = function () {
 sendMessage = function (text) {
     openedSocket.send(text);
 };
-attachMessage = function (text, side) {
+attachMessage = function (data) {
+    var side = (data.user === username) ? 'left' : 'right';
+    var text = data.body;
     var $messages, message;
     message = new Message({
         text: text,
-        messageSide: side
+        messageSide: side,
+        datetime: data.datetime
     });
     $messages = $('.messages');
     if (side === left) {
@@ -67,9 +74,13 @@ $('.message_input').keyup(function (e) {
 });
 
 MessageEvents = {
+    buddy: window.location.hash.substring(2).split("=")[1],
     onMessage: function (event) {
-        console.log('onMessage', event);
-        attachMessage(event.data, left);
+        var data = event.data.replaceAll("\'", "\"");
+        console.log(data);
+        data = JSON.parse(data);
+        console.log(data);
+        attachMessage(data);
     },
     onOpen: function (event) {
         console.log('onOpen', event);
@@ -83,7 +94,6 @@ MessageEvents = {
         disableChatRoom();
     },
     sendMiddleware: function (data) {
-
     }
 };
 

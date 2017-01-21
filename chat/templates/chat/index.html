@@ -30,8 +30,14 @@
         <div class="text_wrapper">
             <div class="text"></div>
         </div>
+        <div class="datetime"></div>
     </li>
 </div>
+<script>
+    var username = "{{ user.username }}";
+    var buddy;
+</script>
+<script src="{% static "prototype.js" %}"></script>
 <script src="{% static "bower_components/jquery/dist/jquery.js" %}"></script>
 <script src="{% static "socket.js" %}"></script>
 <script src="{% static "chat.js" %}"></script>

@@ -1,8 +1,14 @@
 (function () {
     var Socket = function (event) {
+        this._socket = null;
         event = (typeof event === 'object') ? event : {};
-        this.address = "ws://" + window.location.host + "/borvelt";
-        this.address = event.hasOwnProperty('address') ? event.address : this.address;
+        this.buddy = event.hasOwnProperty('buddy') ? event.buddy : null;
+        if(!this.buddy) {
+            console.log("no buddy found.");
+            return ;
+        }
+        buddy = this.buddy;
+        this.address = "ws://" + window.location.host + "/" + this.buddy;
         this.sendMiddleware = event.hasOwnProperty('sendMiddleware') ? event.sendMiddleware : null;
         this.closeMiddleware = event.hasOwnProperty('closeMiddleware') ? event.closeMiddleware : null;
         this._socket = new WebSocket(this.address);
@@ -15,6 +21,9 @@
             if (this.sendMiddleware) {
                 middlewareResponse = this.sendMiddleware(data);
                 data = (typeof middlewareResponse !== 'undefined') ? middlewareResponse : data;
+                if ([false, null].indexOf(data) !== -1 || data.length === 0) {
+                    return;
+                }
                 this._socket.send(data);
                 if (typeof next === 'function') {
                     next();
