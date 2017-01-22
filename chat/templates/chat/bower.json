@@ -1,5 +1,5 @@
 {
-  "name": "chatApp",
+  "name": "chat-app",
   "authors": [
     "borvelt <borvelt@borvelts-MacBook-Pro.local>"
   ],
@@ -19,6 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1"
   }
 }

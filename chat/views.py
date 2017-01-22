@@ -1,8 +1,10 @@
 import hashlib
+import json
 from datetime import datetime
 
 from channels import Group
 from channels.auth import channel_session_user, channel_session_user_from_http
+from django.contrib.auth.models import User
 
 from .models import (Room, Chat)
 
@@ -18,13 +20,15 @@ def recognize_room_name(channel, user):
 def ws_add(message, channel):
     reply = {"accept": False}
     room_name = recognize_room_name(channel, message.user)
-    print(room_name)
+    try:
+        User.objects.filter(username=channel).get()
+    except:
+        message.reply_channel.send(reply)
+        return
     try:
         room = Room.objects.get(name=room_name)
-        print(room)
         reply = {"accept": True}
-    except Exception as e:
-        print(str(e))
+    except:
         try:
             room = Room(name=room_name, members=[channel, message.user.username])
             room.save()
@@ -43,12 +47,17 @@ def ws_add(message, channel):
 def ws_message(message, channel):
     room_name = recognize_room_name(channel, message.user)
     try:
+        User.objects.filter(username=channel).get()
+    except:
+        ws_disconnect(message, channel)
+        return
+    try:
         room = Room.objects.get(name=room_name)
         try:
             chat = Chat(text=message['text'], room=room, datetime=datetime.now(), user=message.user)
             chat.save()
             Group("room-%s" % room.name).send({
-                "text": str({
+                "text": json.dumps({
                     "body": chat.text,
                     "user": chat.user.username,
                     "datetime": str(chat.datetime)
