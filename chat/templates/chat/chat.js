@@ -77,7 +77,7 @@ $('.message_input').keyup(function (e) {
 });
 
 MessageEvents = {
-    buddy: window.location.hash.substring(2).split("=")[1],
+    buddy: buddy,
     onMessage: function (event) {
         var data = event.data.replaceAll("\'", "\"");
         console.log(data);

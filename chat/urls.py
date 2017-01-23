@@ -1,8 +1,8 @@
 from channels.routing import route
 from django.conf.urls import url
 
-from .chat_client import basic_view
-from .views import (ws_message, ws_add, ws_disconnect)
+from .views import basic_view
+from .channel import (ws_message, ws_add, ws_disconnect)
 
 chat_urls = [
     route("websocket.connect", ws_add, path=r"^/(?P<channel>[a-zA-Z0-9_]+)$"),
@@ -11,5 +11,5 @@ chat_urls = [
 ]
 
 urlpatterns = [
-    url(r'^$', basic_view),
+    url(r'^/(?P<buddy>.+)$', basic_view),
 ]
