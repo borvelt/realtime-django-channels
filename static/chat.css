@@ -162,6 +162,7 @@ body {
 .messages .message .text_wrapper .text {
     font-size: 18px;
     font-weight: 300;
+    text-align: right;
 }
 
 .bottom_wrapper {
@@ -191,6 +192,7 @@ body {
     position: absolute;
     outline-width: 0;
     color: gray;
+    direction: rtl;
 }
 
 .bottom_wrapper .send_message {
@@ -237,10 +239,10 @@ body {
     bottom:0px;
 }
 .datetime.left {
-    right: 8px;
+    left: 85px;
     color:#c48843;
 }
 .datetime.right {
     color:#45829b;
-    right: 85px;
+    left: 8px;
 }

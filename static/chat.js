@@ -26,7 +26,8 @@ Message = function (arg) {
 
 enableChatRoom = function () {
     $('.message_input').removeAttr('disabled')
-        .attr('placeholder', 'Please Type Your Message...');
+        .attr('placeholder', 'تایپ کنید...')
+        .focus();
     $('.send_message').removeClass('disabled');
     $('#buddy').text(buddy);
 };
@@ -47,7 +48,7 @@ sendMessage = function (text) {
     openedSocket.send(text);
 };
 attachMessage = function (data) {
-    var side = (data.user === username) ? 'left' : 'right';
+    var side = (data.user === username) ? 'right' : 'left';
     var text = data.body;
     var $messages, message;
     message = new Message({
@@ -56,7 +57,7 @@ attachMessage = function (data) {
         datetime: data.datetime
     });
     $messages = $('.messages');
-    if (side === left) {
+    if (side === right) {
         if (text.trim() === '') {
             return;
         }
