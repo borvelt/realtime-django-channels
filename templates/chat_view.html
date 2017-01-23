@@ -1,7 +1,7 @@
 {% load static %}
 <html>
 <head>
-    <link rel="stylesheet" href="{% static "bower_components/bootstrap/dist/css/bootstrap.min.css" %}"/>
+{#    <link rel="stylesheet" href="{% static "bower_components/bootstrap/dist/css/bootstrap.min.css" %}"/>#}
     <link rel="stylesheet" href="{% static "chat.css" %}">
     <title>Chat application</title>
 </head>
@@ -35,7 +35,7 @@
 </div>
 <script>
     var username = "{{ user.username }}";
-    var buddy;
+    var buddy = "{{ buddy }}";
 </script>
 <script src="{% static "prototype.js" %}"></script>
 <script src="{% static "bower_components/jquery/dist/jquery.js" %}"></script>

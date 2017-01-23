@@ -3,8 +3,8 @@ from django.shortcuts import render
 
 
 @login_required
-def basic_view(request, buddy):
-    return render(request, 'chat/index.html', {
+def chat_view(request, buddy):
+    return render(request, 'chat_view.html', {
         'buddy': buddy,
     })
 

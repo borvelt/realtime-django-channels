@@ -15,11 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from chat.urls import chat_urls, urlpatterns
+
+from chat.urls import urlpatterns
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^chat', include(urlpatterns)),
 ]
-
-channel_routing = chat_urls
