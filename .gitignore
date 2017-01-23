@@ -12,3 +12,5 @@ tests/.coverage
 build/
 tests/report/
 .idea
+/static/bower_components/
+/static/admin/

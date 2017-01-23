@@ -24,8 +24,8 @@ class Room(models.Model):
         chat.save()
         self.channel.send({
             "text": json.dumps({
-                "message": chat.text,
-                "username": chat.user,
+                "body": chat.text,
+                "user": chat.user.username,
                 "datetime": str(chat.datetime)
             })
         })

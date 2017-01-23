@@ -80,10 +80,12 @@ MessageEvents = {
     buddy: buddy,
     onMessage: function (event) {
         var data = event.data.replaceAll("\'", "\"");
-        console.log(data);
         data = JSON.parse(data);
-        console.log(data);
-        attachMessage(data);
+        if(!data.hasOwnProperty('error')){
+            attachMessage(data);
+        } else {
+            console.log(data);
+        }
     },
     onOpen: function (event) {
         console.log('onOpen', event);
@@ -97,6 +99,7 @@ MessageEvents = {
         disableChatRoom();
     },
     sendMiddleware: function (data) {
+        return JSON.stringify({"text": data});
     }
 };
 

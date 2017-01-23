@@ -106,7 +106,7 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [("localhost", 6379)],
         },
-        "ROUTING": "chatApp.urls.channel_routing",
+        "ROUTING": "chatApp.routing.channel_routing",
     },
 }
 

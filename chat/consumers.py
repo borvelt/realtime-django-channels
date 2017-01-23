@@ -10,6 +10,7 @@ from .models import (Room)
 @channel_session_user_from_http
 def ws_connect(message, channel):
     reply = {"accept": False}
+    room = None
     try:
         User.objects.filter(username=channel).get()
     except:
@@ -24,9 +25,9 @@ def ws_connect(message, channel):
             room.save()
             reply = {"accept": True}
         except:
-            room = None
+            pass
     try:
-        assert len(room.name)
+        assert room
         message.reply_channel.send(reply)
         room.channel.add(message.reply_channel)
     except:
@@ -42,23 +43,8 @@ def ws_receive(message, channel):
 
 @channel_session_user
 def ws_disconnect(message, channel):
-    room = Room.findByHashOf(message.user, channel)
-    room.channel.discard(message.reply_channel)
-
-
-@channel_session_user
-def chat_receive(message):
-    channel = message.get('channel', None)
-    try:
-        User.objects.filter(username=channel).get()
-    except:
-        ws_disconnect(message, channel)
-        return
     try:
         room = Room.find_by_hash_of(message.user, channel)
-        try:
-            room.send(message)
-        except Exception as e:
-            print(str(e))
+        room.channel.discard(message.reply_channel)
     except:
-        ws_disconnect(message, channel)
+        pass

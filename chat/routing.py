@@ -1,6 +1,7 @@
 from channels.routing import route
 
-from .consumers import (ws_connect, ws_receive, ws_disconnect, chat_receive)
+from .consumers import (ws_connect, ws_receive, ws_disconnect)
+from .views import chat_receive
 
 websocket_routing = [
     route("websocket.connect", ws_connect,
@@ -13,5 +14,5 @@ websocket_routing = [
 
 
 custom_routing = [
-    route("chat.receive", chat_receive, command="^send$"),
+    route("chat.receive", chat_receive),
 ]

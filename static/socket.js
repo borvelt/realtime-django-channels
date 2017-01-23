@@ -8,7 +8,7 @@
             return ;
         }
         buddy = this.buddy;
-        this.address = "ws://" + window.location.host + "/" + this.buddy;
+        this.address = "ws://" + window.location.host + "/chat/stream/" + this.buddy;
         this.sendMiddleware = event.hasOwnProperty('sendMiddleware') ? event.sendMiddleware : null;
         this.closeMiddleware = event.hasOwnProperty('closeMiddleware') ? event.closeMiddleware : null;
         this._socket = new WebSocket(this.address);
