@@ -7,6 +7,7 @@ Message = function (arg) {
     this.text = arg.text;
     this.messageSide = arg.messageSide;
     this.datetime = arg.datetime;
+    this.user = arg.user;
     this.draw = function (_this) {
         return function () {
             var $message;
@@ -15,6 +16,8 @@ Message = function (arg) {
             $message.find(".datetime").addClass(_this.messageSide)
                 .attr('title', _this.datetime.split(".")[0])
                 .text(_this.datetime.split(" ")[1].split(".")[0]);
+            $message.find(".username").addClass(_this.messageSide).text(_this.user);
+
             $('.messages').append($message);
             return setTimeout(function () {
                 return $message.addClass('appeared');
@@ -75,10 +78,11 @@ attachMessage = function (data, scrollHeightFlag) {
     var user = (Array.isArray(data.user)) ? data.user[0] : data.user;
     var side = (user === username) ? 'right' : 'left';
     var text = data.text;
-    var $messages, message;
+    var message;
     message = new Message({
         text: text,
         messageSide: side,
+        user: user,
         datetime: data.datetime.replace("T", " ")
     });
     if (side === right) {

@@ -56,10 +56,10 @@ body {
 }
 
 .top_menu .title {
-    text-align: left;
+    text-align: right;
     color: #bcbdc0;
     font-size: 20px;
-    padding-left: 2%;
+    padding-right: 2%;
 }
 
 .messages {
@@ -236,13 +236,19 @@ body {
 
 .datetime {
     position: absolute;
-    bottom:0px;
+    bottom:0;
 }
-.datetime.left {
+
+.username {
+    position: absolute;
+    top:0;
+}
+
+.username.left, .datetime.left {
     left: 85px;
     color:#c48843;
 }
-.datetime.right {
+.username.right, .datetime.right {
     color:#45829b;
     left: 8px;
 }
