@@ -11,7 +11,9 @@ class ChatBinding(WebsocketBinding):
 
     @classmethod
     def group_names(cls, instance):
-        return ["binding.notifications." + instance.user.username]
+        group_members = instance.room.getmembers
+        group_members.remove(instance.user.username)
+        return ["binding.notifications." + member for member in group_members]
 
     def has_permission(self, user, action, pk):
         print('user', user)

@@ -1,4 +1,5 @@
 import json
+import ast
 from datetime import datetime
 
 from channels import Group
@@ -16,8 +17,9 @@ class Room(models.Model):
     def setmembers(self, x):
         self.members = json.dumps(x)
 
+    @property
     def getmembers(self):
-        return json.loads(self.members)
+        return ast.literal_eval(self.members)
 
     def natural_key(self):
         return self.name
