@@ -50,18 +50,8 @@ class Room(models.Model):
         return Group("room-%s" % self.id)
 
 
-        # def __str__(self):
-        #     return self.name
-
-
 class Chat(models.Model):
     text = models.CharField(_('Text'), max_length=1000, null=False, blank=False)
     datetime = models.DateTimeField(_('Chat Date Time'))
     user = models.ForeignKey(User)
     room = models.ForeignKey(Room)
-
-    class Meta:
-        unique_together = (('user', 'room'),)
-
-    def __str__(self):
-        return self.text

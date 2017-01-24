@@ -1,8 +1,11 @@
+from channels import (route, route_class)
+
+from .bindings import Demultiplexer
 from .consumers import Consumer
 from .views import chat_receive
-from channels import route
 
 websocket_routing = [
+    route_class(Demultiplexer, path=r"^/bindings$"),
     Consumer.as_route(path=r"^/(?P<channel>[a-zA-Z0-9_]+)$"),
 ]
 

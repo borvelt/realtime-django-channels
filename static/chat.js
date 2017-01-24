@@ -1,4 +1,4 @@
-var openedSocket, attachMessage, left = 'left', right = 'right',
+var chatSocket, attachMessage, left = 'left', right = 'right',
     MessageEvents, Message, getMessageText,
     sendMessage, enableChatRoom, scrollHeight,
     disableChatRoom, retrieveMessages;
@@ -71,7 +71,7 @@ retrieveMessages = function (callback) {
 };
 
 sendMessage = function (text) {
-    openedSocket.send(text);
+    chatSocket.send(text);
 };
 
 attachMessage = function (data, scrollHeightFlag) {
@@ -106,23 +106,22 @@ $('.message_input').keyup(function (e) {
         sendMessage(getMessageText(), left);
     }
 });
-
 MessageEvents = {
-    buddy: buddy,
-    onMessage: function (event) {
-        var data = event.data.replaceAll("\'", "\"");
-        data = JSON.parse(data);
-        if (!data.hasOwnProperty('error')) {
-            attachMessage(data);
-        } else {
-            console.log(data);
-        }
-    },
+    address: "/stream/chat/" + buddy,
     onOpen: function (event) {
         console.log('onOpen', event);
         retrieveMessages(function () {
             enableChatRoom();
         });
+    },
+    onMessage: function (event) {
+        console.log(event.data);
+        var data = JSON.parse(event.data);
+        if (!data.hasOwnProperty('error')) {
+            attachMessage(data);
+        } else {
+            console.log(data);
+        }
     },
     onError: function (event) {
         console.log('onError', event);
@@ -137,5 +136,5 @@ MessageEvents = {
 };
 
 $(document).ready(function () {
-    openedSocket = new Socket(MessageEvents);
+    chatSocket = new Socket(MessageEvents);
 });

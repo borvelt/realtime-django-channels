@@ -20,8 +20,8 @@ def chat_view(request, buddy):
 
 def load_conversation(request, buddy):
     try:
-        # assert request.is_ajax(),  "Ajax request required"
-        assert request.user.is_authenticated()
+        assert request.is_ajax(), "Ajax Request Required."
+        assert request.user.is_authenticated(), "Anonymous User Not Allowed."
         room = Room.find_by_hash_of(request.user, buddy)
         chats = serializers.serialize('json',
                                       Chat.objects.filter(room=room).all(),
@@ -42,6 +42,7 @@ def chat_receive(message):
     channel = message.get('channel')
     room = Room.find_by_hash_of(message.user, channel)
     try:
+        assert message.get('text'), "MESSAGE_EMPTY"
         room.send(message)
     except Exception as e:
         raise ClientError(str(e))

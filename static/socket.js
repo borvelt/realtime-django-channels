@@ -2,13 +2,12 @@
     var Socket = function (event) {
         this._socket = null;
         event = (typeof event === 'object') ? event : {};
-        this.buddy = event.hasOwnProperty('buddy') ? event.buddy : null;
-        if(!this.buddy) {
-            console.log("no buddy found.");
+        var address = event.hasOwnProperty('address') ? event.address : null;
+        if(!address) {
+            console.log("no address found.");
             return ;
         }
-        buddy = this.buddy;
-        this.address = "ws://" + window.location.host + "/chat/stream/" + this.buddy;
+        this.address = "ws://" + window.location.host + address;
         this.sendMiddleware = event.hasOwnProperty('sendMiddleware') ? event.sendMiddleware : null;
         this.closeMiddleware = event.hasOwnProperty('closeMiddleware') ? event.closeMiddleware : null;
         this._socket = new WebSocket(this.address);
