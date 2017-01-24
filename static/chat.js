@@ -1,7 +1,7 @@
 var openedSocket, attachMessage, left = 'left', right = 'right',
     MessageEvents, Message, getMessageText,
-    sendMessage, enableChatRoom,
-    disableChatRoom;
+    sendMessage, enableChatRoom, scrollHeight,
+    disableChatRoom, retrieveMessages;
 
 Message = function (arg) {
     this.text = arg.text;
@@ -24,12 +24,21 @@ Message = function (arg) {
     return this;
 };
 
+scrollHeight = function () {
+    var $message = $('.messages');
+    $message.animate({
+        scrollTop: $message.prop('scrollHeight')
+    }, 300);
+
+};
+
 enableChatRoom = function () {
     $('.message_input').removeAttr('disabled')
         .attr('placeholder', 'تایپ کنید...')
         .focus();
     $('.send_message').removeClass('disabled');
     $('#buddy').text(buddy);
+    scrollHeight();
 };
 
 disableChatRoom = function () {
@@ -44,19 +53,34 @@ getMessageText = function () {
     return $message_input.val();
 };
 
+retrieveMessages = function (callback) {
+    $.ajax({
+        method: "GET",
+        url: buddy + "/retrieve"
+    }).done(function (success) {
+        success.chats.forEach(function (value) {
+            attachMessage(value.fields, true);
+        });
+        if (typeof callback === 'function') {
+            callback();
+        }
+    })
+};
+
 sendMessage = function (text) {
     openedSocket.send(text);
 };
-attachMessage = function (data) {
-    var side = (data.user === username) ? 'right' : 'left';
-    var text = data.body;
+
+attachMessage = function (data, scrollHeightFlag) {
+    var user = (Array.isArray(data.user)) ? data.user[0] : data.user;
+    var side = (user === username) ? 'right' : 'left';
+    var text = data.text;
     var $messages, message;
     message = new Message({
         text: text,
         messageSide: side,
-        datetime: data.datetime
+        datetime: data.datetime.replace("T", " ")
     });
-    $messages = $('.messages');
     if (side === right) {
         if (text.trim() === '') {
             return;
@@ -64,7 +88,9 @@ attachMessage = function (data) {
         $('.message_input').val('');
     }
     message.draw();
-    $messages.animate({scrollTop: $messages.prop('scrollHeight')}, 300);
+    if (scrollHeightFlag !== true) {
+        scrollHeight();
+    }
 };
 
 $('.send_message').click(function () {
@@ -82,7 +108,7 @@ MessageEvents = {
     onMessage: function (event) {
         var data = event.data.replaceAll("\'", "\"");
         data = JSON.parse(data);
-        if(!data.hasOwnProperty('error')){
+        if (!data.hasOwnProperty('error')) {
             attachMessage(data);
         } else {
             console.log(data);
@@ -90,7 +116,9 @@ MessageEvents = {
     },
     onOpen: function (event) {
         console.log('onOpen', event);
-        enableChatRoom();
+        retrieveMessages(function () {
+            enableChatRoom();
+        });
     },
     onError: function (event) {
         console.log('onError', event);

@@ -19,12 +19,15 @@ class Room(models.Model):
     def getmembers(self):
         return json.loads(self.members)
 
+    def natural_key(self):
+        return self.name
+
     def send(self, message):
         chat = Chat(text=message['text'], room=self, datetime=datetime.now(), user=message.user)
         chat.save()
         self.channel.send({
             "text": json.dumps({
-                "body": chat.text,
+                "text": chat.text,
                 "user": chat.user.username,
                 "datetime": str(chat.datetime)
             })
@@ -46,8 +49,9 @@ class Room(models.Model):
     def channel(self):
         return Group("room-%s" % self.id)
 
-    def __str__(self):
-        return self.name
+
+        # def __str__(self):
+        #     return self.name
 
 
 class Chat(models.Model):
@@ -55,6 +59,9 @@ class Chat(models.Model):
     datetime = models.DateTimeField(_('Chat Date Time'))
     user = models.ForeignKey(User)
     room = models.ForeignKey(Room)
+
+    class Meta:
+        unique_together = (('user', 'room'),)
 
     def __str__(self):
         return self.text
