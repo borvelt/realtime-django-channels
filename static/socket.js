@@ -10,7 +10,7 @@
         this.address = "ws://" + window.location.host + address;
         this.sendMiddleware = event.hasOwnProperty('sendMiddleware') ? event.sendMiddleware : null;
         this.closeMiddleware = event.hasOwnProperty('closeMiddleware') ? event.closeMiddleware : null;
-        this._socket = new WebSocket(this.address);
+        this._socket = new ReconnectingWebSocket(this.address);
         this._socket.onmessage = event.hasOwnProperty('onMessage') ? event.onMessage : null;
         this._socket.onopen = event.hasOwnProperty('onOpen') ? event.onOpen : null;
         this._socket.onerror = event.hasOwnProperty('onError') ? event.onError : null;

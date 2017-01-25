@@ -13,7 +13,7 @@ from .utils import catch_client_error
 
 @login_required
 def chat_view(request, buddy):
-    return render(request, 'chat_view.html', {
+    return render(request, 'chat.html', {
         'buddy': buddy,
     })
 

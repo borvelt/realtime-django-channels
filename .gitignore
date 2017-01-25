@@ -14,3 +14,4 @@ tests/report/
 .idea
 /static/bower_components/
 /static/admin/
+/static/assets/
