@@ -25,7 +25,11 @@ class Room(models.Model):
         return self.name
 
     def send(self, message):
-        chat = Chat(text=message['text'], room=self, datetime=datetime.now(), user=message.user)
+        chat = Chat(text=message['text'],
+                    room=self,
+                    datetime=datetime.now(),
+                    user=message.user,
+                    is_seen=True)
         chat.save()
         self.channel.send({
             "text": json.dumps({
@@ -57,3 +61,4 @@ class Chat(models.Model):
     datetime = models.DateTimeField(_('Chat Date Time'))
     user = models.ForeignKey(User)
     room = models.ForeignKey(Room)
+    is_seen = models.BooleanField(_('Is Message Seen'), default=False)

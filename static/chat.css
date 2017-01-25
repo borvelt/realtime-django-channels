@@ -17,6 +17,10 @@
     position: absolute;
 }
 
+.notification-list-template {
+    display: none;
+}
+
 .top_menu .buttons .button {
     width: 16px;
     height: 16px;

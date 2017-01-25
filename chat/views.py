@@ -13,8 +13,13 @@ from .utils import catch_client_error
 
 @login_required
 def chat_view(request, buddy):
+    try:
+        room = Room.find_by_hash_of(request.user, buddy)
+    except Room.DoesNotExist:
+        return JsonResponse({"error": "Buddy Does Not Exists."})
     return render(request, 'chat.html', {
         'buddy': buddy,
+        'room': room.name
     })
 
 
@@ -31,6 +36,21 @@ def load_conversation(request, buddy):
         chats_result = json.loads(chats)
         chats_room = json.loads(room)
         return JsonResponse({"chats": chats_result, "room": chats_room})
+    except Exception as e:
+        print(str(e))
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+def load_notifications(request):
+    try:
+        assert request.is_ajax(), "Ajax Request Required."
+        assert request.user.is_authenticated(), "Anonymous User Not Allowed."
+        chats = serializers.serialize('json',
+                                      Chat.objects.filter(is_seen=False).order_by('-datetime'),
+                                      use_natural_foreign_keys=True,
+                                      use_natural_primary_keys=True)
+        chats_result = json.loads(chats)
+        return JsonResponse({"notifications": chats_result})
     except Exception as e:
         print(str(e))
         return JsonResponse({"error": str(e)}, status=500)

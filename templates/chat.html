@@ -232,7 +232,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-bubbles4"></i>
                     <span class="visible-xs-inline-block position-right">پیام ها</span>
-                    <span class="badge bg-warning-400">۲</span>
+                    <span data-notification="0" id="userNotifications" class="badge bg-warning-400">0</span>
                 </a>
 
                 <div class="dropdown-menu dropdown-content width-350">
@@ -243,82 +243,24 @@
                         </ul>
                     </div>
 
-                    <ul class="media-list dropdown-content-body">
-                        <li class="media">
-                            <div class="media-left">
-                                <img src="{% static "assets/images/placeholder.jpg" %}" class="img-circle img-sm"
-                                     alt="">
-                                <span class="badge bg-danger-400 media-badge">۵</span>
-                            </div>
-
-                            <div class="media-body">
-                                <a href="#" class="media-heading">
-                                    <span class="text-semibold">علی</span>
-                                    <span class="media-annotation pull-right">۰۴:۵۸</span>
-                                </a>
-
-                                <span class="text-muted">به قالب مدیریتی اساک خوش امدید...</span>
-                            </div>
-                        </li>
-
-                        <li class="media">
-                            <div class="media-left">
-                                <img src="{% static "assets/images/placeholder.jpg" %}" class="img-circle img-sm"
-                                     alt="">
-                                <span class="badge bg-danger-400 media-badge">۴</span>
-                            </div>
-
-                            <div class="media-body">
-                                <a href="#" class="media-heading">
-                                    <span class="text-semibold">رضا</span>
-                                    <span class="media-annotation pull-right">۱۲:۱۶</span>
-                                </a>
-
-                                <span class="text-muted">به قالب مدیریتی اساک خوش امدید...</span>
-                            </div>
-                        </li>
-
-                        <li class="media">
-                            <div class="media-left"><img src="{% static "assets/images/placeholder.jpg" %}"
-                                                         class="img-circle img-sm"
-                                                         alt=""></div>
-                            <div class="media-body">
-                                <a href="#" class="media-heading">
-                                    <span class="text-semibold">وحید</span>
-                                    <span class="media-annotation pull-right">هم اکنون</span>
-                                </a>
-
-                                <span class="text-muted">به قالب مدیریتی اساک خوش امدید...</span>
-                            </div>
-                        </li>
-
-                        <li class="media">
-                            <div class="media-left"><img src="{% static "assets/images/placeholder.jpg" %}"
-                                                         class="img-circle img-sm"
-                                                         alt=""></div>
-                            <div class="media-body">
-                                <a href="#" class="media-heading">
-                                    <span class="text-semibold">سجاد</span>
-                                    <span class="media-annotation pull-right">هم اکنون</span>
-                                </a>
-
-                                <span class="text-muted">به قالب مدیریتی اساک خوش امدید...</span>
-                            </div>
-                        </li>
-
-                        <li class="media">
-                            <div class="media-left"><img src="{% static "assets/images/placeholder.jpg" %}"
-                                                         class="img-circle img-sm"
-                                                         alt=""></div>
-                            <div class="media-body">
-                                <a href="#" class="media-heading">
-                                    <span class="text-semibold">صادق</span>
-                                    <span class="media-annotation pull-right">هم اکنون</span>
-                                </a>
-
-                                <span class="text-muted">به قالب مدیریتی اساک خوش امدید...</span>
-                            </div>
-                        </li>
+                    <ul class="notifications-list media-list dropdown-content-body">
+                        <div class="notification-list-template">
+                            <li class=" media">
+                                <div class="media-left">
+                                    <img src="{% static "assets/images/placeholder.jpg" %}"
+                                         class="img-circle img-sm"
+                                         alt="">
+                                    {#                                <span class="badge bg-danger-400 media-badge"></span>#}
+                                </div>
+                                <div class="media-body">
+                                    <a href="#" class="media-heading">
+                                        <span class="text-semibold"></span>
+                                        <span class="media-annotation pull-right"></span>
+                                    </a>
+                                    <span class="text-muted"></span>
+                                </div>
+                            </li>
+                        </div>
                     </ul>
 
                     <div class="dropdown-content-footer">
@@ -691,11 +633,15 @@
 <!-- /page container -->
 
 <!-- Socket -->
-<script> var username = "{{ user.username }}";
-var buddy = "{{ buddy }}"; </script>
+<script>
+    var username = "{{ user.username }}";
+    var buddy = "{{ buddy }}";
+    var room = "{{ room }}";
+</script>
 <script type="text/javascript" src="{% static "reconnecting-websocket.min.js" %}"></script>
 <script type="text/javascript" src="{% static "socket.js" %}"></script>
 <script type="text/javascript" src="{% static "chat.js" %}"></script>
+<script type="text/javascript" src="{% static "notifications.js" %}"></script>
 <!-- /Socket -->
 
 </body>
