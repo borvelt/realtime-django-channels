@@ -69,42 +69,42 @@ showNotifications = function (data, fromAjax) {
         addUserNotificationList(data);
     }
     window['notifications_attached'] = true;
+    setTimeout(function () {
+        packNotificationsList();
+    }, 0);
 };
 packNotificationsList = function () {
     var list = {};
-    $('li[user]').each(function (i, el) {
+    $($('li[user]').get().reverse()).each(function (i, el) {
         var $el = $(el);
         var user = $el.attr('user');
         if (list.hasOwnProperty(user)) {
             list[user].count += 1;
         } else {
             list[user] = {};
-            list[user].count = 1;
+            var packed = parseInt($el.attr("packed"));
+            list[user].count = (isNaN(packed)) ? 1 : packed;
         }
         list[user].lastData = $el;
     });
     for (var key in list) {
         var user = list[key].lastData.find('.text-semibold').text();
-        $(".notifications-list li[user='" + user +"']").remove();
+        list[key].lastData.attr("packed", list[key].count);
+        $(".notifications-list li[user='" + user + "']").remove();
         list[key].lastData.find('.collected-item').text(list[key].count);
         $(".notifications-list").append(list[key].lastData);
     }
-
 };
 retrieveNotifications = function () {
     $.ajax({
         method: "GET",
-        url: "notifications"
+        url: "/chat/notifications"
     }).done(function (success) {
         success.notifications.forEach(function (value) {
             showNotifications(value.fields, true);
         });
-        packNotificationsList();
         if (typeof callback === 'function') {
             callback();
         }
     })
 };
-$(document).ready(function () {
-    notificationsSocket = new Socket(NotificationsEvent);
-});

@@ -32,8 +32,8 @@ def load_conversation(request, buddy):
         assert request.is_ajax(), "Ajax Request Required."
         assert request.user.is_authenticated(), "Anonymous User Not Allowed."
         room = Room.find_by_hash_of(request.user, buddy)
-        all_relative_chats = Chat.objects.filter(room=room).all()
-        all_relative_chats.update(is_seen=True)
+        all_relative_chats = Chat.objects.filter(room=room)
+        all_relative_chats.exclude(user=request.user.pk).update(is_seen=True)
         chats = serializers.serialize('json',
                                       all_relative_chats,
                                       use_natural_foreign_keys=True,
@@ -52,10 +52,10 @@ def load_notifications(request):
     try:
         assert request.is_ajax(), "Ajax Request Required."
         assert request.user.is_authenticated(), "Anonymous User Not Allowed."
-        founded_chats = Chat.objects.filter(is_seen=False)\
-            .exclude(user=request.user.pk)\
+        founded_chats = Chat.objects.filter(is_seen=False) \
+            .exclude(user=request.user.pk) \
             .order_by('-datetime')
-        print([chat.room for chat in founded_chats ])
+        founded_chats = [chat for chat in founded_chats if request.user.username in chat.room.getmembers]
         chats = serializers.serialize('json',
                                       founded_chats,
                                       use_natural_foreign_keys=True,

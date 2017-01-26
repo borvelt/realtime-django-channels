@@ -42,6 +42,7 @@ enableChatRoom = function () {
     $('.send_message').removeClass('disabled');
     $('#buddy').text(buddy);
     scrollHeight();
+    notificationsSocket = new Socket(NotificationsEvent);
 };
 
 disableChatRoom = function () {

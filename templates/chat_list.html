@@ -38,3 +38,16 @@
         {% endfor %}
     </ul>
 {% endblock %}
+
+{% block scripts %}
+    <script>
+        var username = "{{ user.username }}";
+        var room = null;
+        $(document).ready(function () {
+            notificationsSocket = new Socket(NotificationsEvent);
+        });
+    </script>
+    <script type="text/javascript" src="{% static "reconnecting-websocket.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "socket.js" %}"></script>
+    <script type="text/javascript" src="{% static "notifications.js" %}"></script>
+{% endblock %}

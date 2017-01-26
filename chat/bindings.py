@@ -37,9 +37,10 @@ class ChatBinding(WebsocketBinding):
         return payload
 
     def has_permission(self, user, action, pk):
-        print('user', user)
-        print('action', action)
-        print('pk', pk)
+        try:
+            action in ['update']
+        except:
+            return False
         return True
 
 
