@@ -63,6 +63,7 @@ retrieveMessages = function (callback) {
     }).done(function (success) {
         success.chats.forEach(function (value) {
             attachMessage(value.fields, true);
+            window['messages_attached'] = true;
         });
         if (typeof callback === 'function') {
             callback();
@@ -109,25 +110,24 @@ $('.message_input').keyup(function (e) {
 MessageEvents = {
     address: "/stream/chat/" + buddy,
     onOpen: function (event) {
-        console.log('onOpen', event);
-        retrieveMessages(function () {
+        if (!window['messages_attached']) {
+            retrieveMessages(function () {
+                enableChatRoom();
+            });
+        } else {
             enableChatRoom();
-        });
+        }
     },
     onMessage: function (event) {
-        console.log(event.data);
         var data = JSON.parse(event.data);
         if (!data.hasOwnProperty('error')) {
             attachMessage(data);
         } else {
-            console.log(data);
         }
     },
     onError: function (event) {
-        console.log('onError', event);
     },
     onClose: function (event) {
-        console.log('onClose', event);
         disableChatRoom();
     },
     sendMiddleware: function (data) {

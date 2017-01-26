@@ -1,5 +1,5 @@
-import json
 import ast
+import json
 from datetime import datetime
 
 from channels import Group
@@ -11,8 +11,15 @@ from .utils import sha256_of
 
 
 class Room(models.Model):
-    name = models.CharField(_('Name'), max_length=64, unique=True, null=False, blank=False)
-    members = models.CharField(_('Members'), max_length=500, null=False, blank=False)
+    name = models.CharField(_('Name'),
+                            max_length=64,
+                            unique=True,
+                            null=False,
+                            blank=False)
+    members = models.CharField(_('Members'),
+                               max_length=500,
+                               null=False,
+                               blank=False)
 
     def setmembers(self, x):
         self.members = json.dumps(x)
@@ -28,8 +35,7 @@ class Room(models.Model):
         chat = Chat(text=message['text'],
                     room=self,
                     datetime=datetime.now(),
-                    user=message.user,
-                    is_seen=True)
+                    user=message.user,)
         chat.save()
         self.channel.send({
             "text": json.dumps({
@@ -55,10 +61,20 @@ class Room(models.Model):
     def channel(self):
         return Group("room-%s" % self.id)
 
+    def __str__(self):
+        return self.members
+
 
 class Chat(models.Model):
-    text = models.CharField(_('Text'), max_length=1000, null=False, blank=False)
+    text = models.CharField(_('Text'),
+                            max_length=1000,
+                            null=False,
+                            blank=False)
     datetime = models.DateTimeField(_('Chat Date Time'))
     user = models.ForeignKey(User)
     room = models.ForeignKey(Room)
-    is_seen = models.BooleanField(_('Is Message Seen'), default=False)
+    is_seen = models.BooleanField(_('Is Message Seen'),
+                                  default=False)
+
+    def __str__(self):
+        return self.text

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="panel-heading">
+        <h5 class="panel-title">لیست کاربران</h5>
+        <div class="heading-elements">
+            <ul class="icons-list">
+                <li><a data-action="collapse" class=""></a></li>
+                <li><a data-action="reload"></a></li>
+                <li><a data-action="close"></a></li>
+            </ul>
+        </div>
+        <a class="heading-elements-toggle"><i class="icon-menu"></i></a></div>
+
+    <ul class="media-list media-list-linked" style="display: block;">
+        {% for user in users_list %}
+            <li class="media-header"></li>
+            <li class="media">
+                <a href="{% url 'room_view' buddy=user.fields.username %}" class="media-link">
+                    <div class="media-left">
+                        <img src="{% static "assets/images/placeholder.jpg" %}"
+                             class="img-circle"
+                             alt="">
+                    </div>
+                    <div class="media-body">
+                        <div class="media-heading text-semibold">{{ user.fields.username }}</div>
+                        <span class="text-muted"></span>
+                    </div>
+                    <div class="media-right media-middle text-nowrap">
+												<span class="text-muted">
+													<i class="icon-pin-alt text-size-base"></i>&nbsp;
+												</span>
+                    </div>
+                </a>
+            </li>
+        {% empty %}
+            <li>Sorry, no users in this list.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

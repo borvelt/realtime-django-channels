@@ -2,6 +2,7 @@ import json
 
 from channels.auth import channel_session_user
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core import serializers
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -12,24 +13,29 @@ from .utils import catch_client_error
 
 
 @login_required
-def chat_view(request, buddy):
+def room_view(request, buddy):
+    room_name = None
     try:
         room = Room.find_by_hash_of(request.user, buddy)
+        room_name = room.name
     except Room.DoesNotExist:
-        return JsonResponse({"error": "Buddy Does Not Exists."})
+        pass
     return render(request, 'chat.html', {
         'buddy': buddy,
-        'room': room.name
+        'room': room_name
     })
 
 
+@login_required
 def load_conversation(request, buddy):
     try:
         assert request.is_ajax(), "Ajax Request Required."
         assert request.user.is_authenticated(), "Anonymous User Not Allowed."
         room = Room.find_by_hash_of(request.user, buddy)
+        all_relative_chats = Chat.objects.filter(room=room).all()
+        all_relative_chats.update(is_seen=True)
         chats = serializers.serialize('json',
-                                      Chat.objects.filter(room=room).all(),
+                                      all_relative_chats,
                                       use_natural_foreign_keys=True,
                                       use_natural_primary_keys=True)
         room = serializers.serialize('json', [room])
@@ -41,12 +47,17 @@ def load_conversation(request, buddy):
         return JsonResponse({"error": str(e)}, status=500)
 
 
+@login_required
 def load_notifications(request):
     try:
         assert request.is_ajax(), "Ajax Request Required."
         assert request.user.is_authenticated(), "Anonymous User Not Allowed."
+        founded_chats = Chat.objects.filter(is_seen=False)\
+            .exclude(user=request.user.pk)\
+            .order_by('-datetime')
+        print([chat.room for chat in founded_chats ])
         chats = serializers.serialize('json',
-                                      Chat.objects.filter(is_seen=False).order_by('-datetime'),
+                                      founded_chats,
                                       use_natural_foreign_keys=True,
                                       use_natural_primary_keys=True)
         chats_result = json.loads(chats)
@@ -56,13 +67,25 @@ def load_notifications(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 
+@login_required
+def chat_list(request):
+    users_list = User.objects.exclude(username=request.user.username)
+    serialized_users_list = serializers.serialize('json',
+                                                  users_list,
+                                                  fields=['username', 'pk'])
+    serialized_users = json.loads(serialized_users_list)
+    return render(request, 'chat_list.html', {
+        'users_list': serialized_users,
+    })
+
+
 @catch_client_error
 @channel_session_user
 def chat_receive(message):
     channel = message.get('channel')
     room = Room.find_by_hash_of(message.user, channel)
     try:
-        assert message.get('text'), "MESSAGE_EMPTY"
+        assert len(message.get('text')), "MESSAGE_EMPTY"
         room.send(message)
     except Exception as e:
         raise ClientError(str(e))

@@ -40,7 +40,7 @@ class ChatBinding(WebsocketBinding):
         print('user', user)
         print('action', action)
         print('pk', pk)
-        return False
+        return True
 
 
 class Demultiplexer(WebsocketDemultiplexer):
