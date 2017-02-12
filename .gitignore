@@ -15,3 +15,4 @@ tests/report/
 /static/bower_components/
 /static/admin/
 /static/assets/
+db.sqlite3
