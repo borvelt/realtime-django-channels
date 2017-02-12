@@ -16,3 +16,4 @@ tests/report/
 /static/admin/
 /static/assets/
 db.sqlite3
+/**/.DS_Store
