@@ -21,7 +21,7 @@ Now install packages.
 $ pip install -r requirements.txt
 ```
 
-Install redis server or some thing like redis(if your not using redis or use on different port see `CHANNEL_LAYERS` in `chatApp/settings.py` )
+Install [redis server](https://redis.io/download) or some thing like redis(if your not using redis or use on different port see `CHANNEL_LAYERS` in `chatApp/settings.py` )
 
 Database Migration:
 
