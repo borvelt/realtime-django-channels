@@ -44,7 +44,7 @@ $ python manage.py runworker -v2
 
 ## Usage
 
-application just work in /chat url that this url need authentication, create superuser with manage.py interface.
+Application just work in `/chat` url that this url need authentication, create superuser with `manage.py` interface.
 
 ## Test
 
