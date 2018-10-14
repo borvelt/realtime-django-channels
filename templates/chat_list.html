@@ -4,7 +4,7 @@
   <div class="panel-heading">
       <h5 class="panel-title">All users to chat: </h5>
       <a class="heading-elements-toggle"><i class="icon-menu"></i></a></div>
-    <ul class="messages">
+    <ul class="messages" style="overflow: unset">
       {% for user in users_list %}
         <li class="message left appeared">
           <a href="{% url 'room_view' buddy=user.fields.username %}">

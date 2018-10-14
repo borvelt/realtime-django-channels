@@ -9,19 +9,9 @@
     <title>Django Channel</title>
 
     <!-- Global stylesheets -->
-    <link href="{% static "bootstrap.min.css" %}" rel="stylesheet" type="text/css">
-    <link href="{% static "core.min.css" %}" rel="stylesheet" type="text/css">
-    <link href="{% static "components.min.css" %}" rel="stylesheet" type="text/css">
-    <link href="{% static "colors.min.css" %}" rel="stylesheet" type="text/css">
-    <link href="{% static "styles.css" %}" rel="stylesheet" type="text/css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="{% static "chat.css" %}" rel="stylesheet" type="text/css">
     <!-- /global stylesheets -->
-
-    <!-- Core JS files -->
-    <script type="text/javascript" src="{% static "jquery.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "bootstrap.min.js" %}"></script>
-    <!-- /core JS files -->
-
 </head>
 
 <body>
@@ -30,7 +20,7 @@
 <div class="navbar navbar-inverse">
     <div class="navbar-collapse collapse" id="navbar-mobile">
         <ul class="nav navbar-nav navbar-right">
-            <li>You are: {{ username }}</li>
+            <li class="whoami">You are: {{ username }}</li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-bubbles4"></i>
@@ -40,9 +30,9 @@
 
                 <div class="dropdown-menu dropdown-content width-350">
                     <div class="dropdown-content-heading">
-                        Messages
+                        <span>Messages</span>
                         <ul class="icons-list">
-                            <li><a href="{%  url 'users_list' %}"><i class="icon-compose"></i></a></li>
+                            <li><a href="{%  url 'users_list' %}">Compose</a></li>
                         </ul>
                     </div>
 
@@ -55,7 +45,7 @@
                                 <div class="media-body">
                                     <a href="#" class="notification-link media-heading">
                                         <span class="text-semibold"></span>
-                                        <span class="media-annotation pull-left"></span>
+                                        <span class="media-annotation pull-right"></span>
                                     </a>
                                     <span class="text-muted"></span>
                                 </div>
@@ -112,6 +102,12 @@
 
 </div>
 <!-- /page container -->
+
+
+<!-- Core JS files -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!-- /core JS files -->
 
 <!-- Socket -->
 {% block scripts %}
