@@ -37,7 +37,7 @@ scrollHeight = function () {
 
 enableChatRoom = function () {
     $('.message_input').removeAttr('disabled')
-        .attr('placeholder', 'تایپ کنید...')
+        .attr('placeholder', 'Type Here...')
         .focus();
     $('.send_message').removeClass('disabled');
     $('#buddy').text(buddy);

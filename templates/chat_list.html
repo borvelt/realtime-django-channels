@@ -1,42 +1,30 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <div class="panel-heading">
-        <h5 class="panel-title">لیست کاربران</h5>
-        <div class="heading-elements">
-            <ul class="icons-list">
-                <li><a data-action="collapse" class=""></a></li>
-                <li><a data-action="reload"></a></li>
-                <li><a data-action="close"></a></li>
-            </ul>
-        </div>
-        <a class="heading-elements-toggle"><i class="icon-menu"></i></a></div>
-
-    <ul class="media-list media-list-linked" style="display: block;">
-        {% for user in users_list %}
-            <li class="media-header"></li>
-            <li class="media">
-                <a href="{% url 'room_view' buddy=user.fields.username %}" class="media-link">
-                    <div class="media-left">
-                        <img src="{% static "assets/images/placeholder.jpg" %}"
-                             class="img-circle"
-                             alt="">
-                    </div>
-                    <div class="media-body">
-                        <div class="media-heading text-semibold">{{ user.fields.username }}</div>
-                        <span class="text-muted"></span>
-                    </div>
-                    <div class="media-right media-middle text-nowrap">
-												<span class="text-muted">
-													<i class="icon-pin-alt text-size-base"></i>&nbsp;
-												</span>
-                    </div>
-                </a>
-            </li>
+  <div class="panel-heading">
+      <h5 class="panel-title">All users to chat: </h5>
+      <a class="heading-elements-toggle"><i class="icon-menu"></i></a></div>
+    <ul class="messages">
+      {% for user in users_list %}
+        <li class="message left appeared">
+          <a href="{% url 'room_view' buddy=user.fields.username %}">
+          <div class="avatar"></div>
+          <div class="text_wrapper">
+              <div class="text">{{ user.fields.username }}</div>
+          </div>
+          <div class="datetime left"></div>
+          <div class="username left"></div>
+          </a>
+        </li>  
         {% empty %}
-            <li>Sorry, no users in this list.</li>
-        {% endfor %}
+          <li class="message left appeared">
+              <div class="text_wrapper">
+                  <div class="text">No body to speak.</div>
+              </div>
+            </li>    
+      {% endfor %}
     </ul>
+  </div>
 {% endblock %}
 
 {% block scripts %}

@@ -22,7 +22,8 @@ def room_view(request, buddy):
         pass
     return render(request, 'chat.html', {
         'buddy': buddy,
-        'room': room_name
+        'room': room_name,
+        'username': request.user.username
     })
 
 
@@ -41,7 +42,7 @@ def load_conversation(request, buddy):
         room = serializers.serialize('json', [room])
         chats_result = json.loads(chats)
         chats_room = json.loads(room)
-        return JsonResponse({"chats": chats_result, "room": chats_room})
+        return JsonResponse({'chats': chats_result, 'room': chats_room})
     except Exception as e:
         print(str(e))
         return JsonResponse({"error": str(e)}, status=500)
@@ -61,7 +62,7 @@ def load_notifications(request):
                                       use_natural_foreign_keys=True,
                                       use_natural_primary_keys=True)
         chats_result = json.loads(chats)
-        return JsonResponse({"notifications": chats_result})
+        return JsonResponse({'notifications': chats_result})
     except Exception as e:
         print(str(e))
         return JsonResponse({"error": str(e)}, status=500)
@@ -76,6 +77,7 @@ def chat_list(request):
     serialized_users = json.loads(serialized_users_list)
     return render(request, 'chat_list.html', {
         'users_list': serialized_users,
+        'username': request.user.username
     })
 
 
