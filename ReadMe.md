@@ -1,4 +1,4 @@
-# Chat app with django-channels
+# Real-time app with django-channels
 
 *[djago channels](https://channels.readthedocs.io/en/latest/) help you to have socket programming experince with django routers, it's incredible, isn't it?*
 
